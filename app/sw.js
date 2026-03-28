@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ouchmac-v3';
+const CACHE_NAME = 'ouchmac-v4';
 const ASSETS = [
     './',
     './index.html',

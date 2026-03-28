@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
     <div class="scanlines"></div>
@@ -53,19 +53,41 @@
             </div>
         </section>
 
-        <!-- Combat Style (Mode) -->
+        <!-- Combat Style (Mode) — 8 Sound Packs -->
         <section class="control-section">
             <label class="section-label">/// COMBAT STYLE</label>
-            <div class="mode-toggle">
-                <button id="mode-adults" class="mode-btn active" data-mode="adults">
+            <div class="mode-grid">
+                <button class="mode-btn active" data-mode="adults">
                     <span class="mode-icon">💀</span>
                     <span class="mode-name">BERSERKER</span>
-                    <span class="mode-sub">pain & suffering</span>
                 </button>
-                <button id="mode-kids" class="mode-btn" data-mode="kids">
+                <button class="mode-btn" data-mode="kids">
                     <span class="mode-icon">🐉</span>
                     <span class="mode-name">CREATURE</span>
-                    <span class="mode-sub">dungeon pets</span>
+                </button>
+                <button class="mode-btn" data-mode="scifi">
+                    <span class="mode-icon">🚀</span>
+                    <span class="mode-name">SCI-FI</span>
+                </button>
+                <button class="mode-btn" data-mode="horror">
+                    <span class="mode-icon">👻</span>
+                    <span class="mode-name">HORROR</span>
+                </button>
+                <button class="mode-btn" data-mode="cartoon">
+                    <span class="mode-icon">🎨</span>
+                    <span class="mode-name">CARTOON</span>
+                </button>
+                <button class="mode-btn" data-mode="martial">
+                    <span class="mode-icon">🥋</span>
+                    <span class="mode-name">MARTIAL</span>
+                </button>
+                <button class="mode-btn" data-mode="robot">
+                    <span class="mode-icon">🤖</span>
+                    <span class="mode-name">ROBOT</span>
+                </button>
+                <button class="mode-btn" data-mode="nature">
+                    <span class="mode-icon">🌿</span>
+                    <span class="mode-name">NATURE</span>
                 </button>
             </div>
         </section>
@@ -109,6 +131,20 @@
         </footer>
     </div>
 
-    <script src="app.js?v=2"></script>
+    <!-- Rage Quit Overlay (hidden by default) -->
+    <div id="rage-overlay" class="rage-overlay" style="display:none;">
+        <div class="rage-skull" id="rage-skull">💀</div>
+        <div class="rage-title glitch" data-text="DEVICE DESTROYED" id="rage-title">DEVICE DESTROYED</div>
+        <div class="rage-messages" id="rage-messages">RAGE QUIT!</div>
+        <button class="respawn-btn" id="respawn-btn" style="display:none;">
+            <span class="btn-icon">🔄</span>
+            <span>RESPAWN?</span>
+        </button>
+    </div>
+
+    <!-- Kill Count Badge -->
+    <div class="kill-count" id="kill-count">DEVICES DESTROYED: <span id="kill-count-num">0</span></div>
+
+    <script src="app.js?v=4"></script>
 </body>
 </html>

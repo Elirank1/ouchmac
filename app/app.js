@@ -70,7 +70,7 @@
     const loadedSounds = { adults: [], kids: [] };
     let soundsLoaded = false;
 
-    // MP3 file manifests
+    // MP3 file manifests — 8 sound packs
     const soundFiles = {
         adults: [
             'ouch1.mp3', 'ouch2.mp3', 'ouch3.mp3',
@@ -89,6 +89,30 @@
             'squeak1.mp3', 'squeak2.mp3',
             'chirp1.mp3', 'chirp2.mp3',
             'boing1.mp3', 'boing2.mp3'
+        ],
+        scifi: [
+            'laser1.mp3', 'laser2.mp3', 'shield1.mp3',
+            'warp1.mp3', 'plasma1.mp3', 'glitch1.mp3'
+        ],
+        horror: [
+            'scream1.mp3', 'growl1.mp3', 'creak1.mp3',
+            'whisper1.mp3', 'thump1.mp3', 'chains1.mp3'
+        ],
+        cartoon: [
+            'honk1.mp3', 'splat1.mp3', 'spring1.mp3',
+            'whistle1.mp3', 'pop1.mp3', 'wobble1.mp3'
+        ],
+        martial: [
+            'punch1.mp3', 'punch2.mp3', 'kick1.mp3',
+            'chop1.mp3', 'block1.mp3', 'kiai1.mp3'
+        ],
+        robot: [
+            'servo1.mp3', 'error1.mp3', 'clank1.mp3',
+            'powerdown1.mp3', 'zap1.mp3', 'dial1.mp3'
+        ],
+        nature: [
+            'thunder1.mp3', 'splash1.mp3', 'branch1.mp3',
+            'wind1.mp3', 'rock1.mp3', 'growl1.mp3'
         ]
     };
 
@@ -99,48 +123,49 @@
         if (audioCtx.state === 'suspended') audioCtx.resume();
     }
 
-    // Preload MP3/WAV files
+    // Preload MP3/WAV files for all packs
     function preloadSounds() {
-        ['adults', 'kids'].forEach(mode => {
+        Object.keys(soundFiles).forEach(mode => {
+            if (!loadedSounds[mode]) loadedSounds[mode] = [];
             soundFiles[mode].forEach(file => {
                 const audio = new Audio('sounds/' + mode + '/' + file);
                 audio.preload = 'auto';
                 audio.addEventListener('canplaythrough', () => {
                     loadedSounds[mode].push(audio);
-                    if (loadedSounds.adults.length > 0 || loadedSounds.kids.length > 0) {
-                        soundsLoaded = true;
-                    }
+                    soundsLoaded = true;
                 }, { once: true });
-                // Silently fail if file doesn't exist
                 audio.addEventListener('error', () => {}, { once: true });
             });
         });
     }
 
-    function playLoadedSound(mode) {
+    function playLoadedSound(mode, volume) {
         const sounds = loadedSounds[mode];
         if (sounds.length === 0) return false;
         const sound = sounds[Math.floor(Math.random() * sounds.length)];
         const clone = sound.cloneNode();
-        clone.volume = 1.0;
+        clone.volume = Math.max(0.15, Math.min(1.0, volume || 1.0));
         clone.play().catch(() => {});
         return true;
     }
 
-    // Adult sounds — dramatic, painful, dark (synth fallback)
-    function playAdultSound() {
-        ensureAudioCtx();
-        if (playLoadedSound('adults')) return;
-        const variants = [playGroan, playOw, playDramatic, playBonk, playYelp, playDarkHit, playDistortion];
-        variants[Math.floor(Math.random() * variants.length)]();
-    }
+    // Synth fallbacks per mode
+    const synthFallbacks = {
+        adults: [playGroan, playOw, playDramatic, playBonk, playYelp, playDarkHit, playDistortion],
+        kids: [playSqueak, playBoing, playMeow, playRoar, playBeepBoop, playChirp, playWobble],
+        scifi: [playDistortion, playYelp, playBonk],
+        horror: [playDarkHit, playGroan, playDistortion],
+        cartoon: [playBoing, playSqueak, playBonk],
+        martial: [playDarkHit, playBonk, playDistortion],
+        robot: [playBeepBoop, playDistortion, playBonk],
+        nature: [playGroan, playDarkHit, playDistortion],
+    };
 
-    // Kids sounds — creatures, cute, silly (synth fallback)
-    function playKidsSound() {
+    function playModeSound(volume) {
         ensureAudioCtx();
-        if (playLoadedSound('kids')) return;
-        const variants = [playSqueak, playBoing, playMeow, playRoar, playBeepBoop, playChirp, playWobble];
-        variants[Math.floor(Math.random() * variants.length)]();
+        if (playLoadedSound(state.mode, volume)) return;
+        const fallbacks = synthFallbacks[state.mode] || synthFallbacks.adults;
+        fallbacks[Math.floor(Math.random() * fallbacks.length)](volume);
     }
 
     // ── ADULT SOUNDS ──
@@ -355,12 +380,12 @@
         osc.stop(audioCtx.currentTime + 0.4); lfo.stop(audioCtx.currentTime + 0.4);
     }
 
-    function playSound() {
-        state.mode === 'adults' ? playAdultSound() : playKidsSound();
+    function playSound(volume) {
+        playModeSound(volume);
     }
 
     // ── Hit handling ───────────────────────────────────
-    function triggerHit() {
+    function triggerHit(intensity) {
         const now = Date.now();
         if (now - state.lastHitTime < state.debounceMs) return;
         state.lastHitTime = now;
@@ -368,7 +393,9 @@
         state.hitCount++;
         localStorage.setItem('ouch_hits', String(state.hitCount));
 
-        playSound();
+        // Volume scales with hit intensity (0.15 min so light taps are audible)
+        const volume = Math.max(0.15, Math.min(1.0, intensity || 0.7));
+        playSound(volume);
         updateHitDisplay();
         animateHit();
     }
@@ -469,9 +496,12 @@
 
         const mag = Math.sqrt(acc.x * acc.x + acc.y * acc.y + acc.z * acc.z);
         const threshold = thresholds[state.sensitivity];
+        const excess = mag - (9.8 + threshold);
 
-        if (mag > 9.8 + threshold) {
-            triggerHit();
+        if (excess > 0) {
+            // Normalize intensity: 0.0 at threshold, 1.0 at 10x threshold
+            const intensity = Math.min(1.0, excess / (threshold * 10));
+            triggerHit(intensity);
         }
     }
 
@@ -503,7 +533,7 @@
 
         els.btnSimulate.addEventListener('click', () => {
             ensureAudioCtx();
-            triggerHit();
+            triggerHit(0.3 + Math.random() * 0.7);
         });
 
         els.btnReset.addEventListener('click', () => {
