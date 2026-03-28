@@ -669,3 +669,293 @@ body::before {
     0% { transform: translateY(0) translateX(0); }
     100% { transform: translateY(-20px) translateX(10px); }
 }
+
+/* ═══ RAGE QUIT MODE ═══ */
+
+/* Body class — red flash background */
+body.rage-quit {
+    animation: rageFlash 0.15s ease-in-out 6;
+}
+
+@keyframes rageFlash {
+    0%, 100% { background-color: var(--bg); }
+    50% { background-color: #4a0000; }
+}
+
+/* Intense screen shake on body */
+body.rage-quit #app {
+    animation: rageShake 0.1s linear 20;
+}
+
+@keyframes rageShake {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    10% { transform: translate(-12px, -8px) rotate(-3deg); }
+    20% { transform: translate(10px, 6px) rotate(2.5deg); }
+    30% { transform: translate(-14px, 4px) rotate(-2deg); }
+    40% { transform: translate(8px, -10px) rotate(3deg); }
+    50% { transform: translate(-6px, 12px) rotate(-1.5deg); }
+    60% { transform: translate(14px, -4px) rotate(2deg); }
+    70% { transform: translate(-10px, -6px) rotate(-3deg); }
+    80% { transform: translate(6px, 8px) rotate(1.5deg); }
+    90% { transform: translate(-8px, -12px) rotate(-2.5deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+/* Intensified scanlines during rage */
+body.rage-quit .scanlines {
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 1px,
+        rgba(255, 0, 0, 0.08) 1px,
+        rgba(0, 0, 0, 0.25) 3px
+    );
+    animation: scanlineFlicker 0.08s steps(2) infinite;
+}
+
+@keyframes scanlineFlicker {
+    0% { opacity: 0.8; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+/* Rage Quit Overlay */
+.rage-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: radial-gradient(ellipse at center, rgba(40, 0, 0, 0.97) 0%, rgba(0, 0, 0, 0.99) 70%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    animation: overlayFadeIn 0.3s ease-out forwards;
+}
+
+@keyframes overlayFadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* Pulsing red glow border on overlay */
+.rage-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 3px solid var(--neon-red);
+    box-shadow:
+        inset 0 0 80px rgba(255, 23, 68, 0.15),
+        0 0 60px rgba(255, 23, 68, 0.3);
+    animation: borderPulse 0.8s ease-in-out infinite alternate;
+    pointer-events: none;
+}
+
+@keyframes borderPulse {
+    0% { box-shadow: inset 0 0 40px rgba(255, 23, 68, 0.1), 0 0 30px rgba(255, 23, 68, 0.2); }
+    100% { box-shadow: inset 0 0 120px rgba(255, 23, 68, 0.25), 0 0 80px rgba(255, 23, 68, 0.5); }
+}
+
+/* Skull emoji */
+.rage-skull {
+    font-size: 80px;
+    animation: skullPulse 0.5s ease-in-out infinite alternate, skullFloat 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px rgba(255, 23, 68, 0.8));
+}
+
+@keyframes skullPulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.15); }
+}
+
+@keyframes skullFloat {
+    0%, 100% { margin-top: 0; }
+    50% { margin-top: -10px; }
+}
+
+/* DEVICE DESTROYED title with glitch */
+.rage-title {
+    font-family: var(--font-pixel);
+    font-size: 22px;
+    color: var(--neon-red);
+    text-align: center;
+    text-shadow:
+        0 0 10px var(--neon-red),
+        0 0 40px var(--neon-red),
+        0 0 80px rgba(255, 23, 68, 0.6),
+        0 0 120px rgba(255, 23, 68, 0.3);
+    letter-spacing: 3px;
+    animation: rageGlitch 0.15s steps(2) infinite;
+    position: relative;
+    padding: 0 16px;
+}
+
+.rage-title::before,
+.rage-title::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0 16px;
+}
+
+.rage-title::before {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px var(--neon-cyan);
+    animation: rageGlitchBefore 0.2s steps(3) infinite;
+}
+
+.rage-title::after {
+    color: var(--neon-magenta);
+    text-shadow: 0 0 10px var(--neon-magenta);
+    animation: rageGlitchAfter 0.25s steps(3) infinite;
+}
+
+@keyframes rageGlitch {
+    0% { transform: translate(0); }
+    25% { transform: translate(-2px, 1px); }
+    50% { transform: translate(2px, -1px); }
+    75% { transform: translate(-1px, -1px); }
+    100% { transform: translate(1px, 1px); }
+}
+
+@keyframes rageGlitchBefore {
+    0% { clip-path: inset(0 0 80% 0); transform: translate(-4px, -2px); opacity: 0.8; }
+    33% { clip-path: inset(40% 0 20% 0); transform: translate(4px, 1px); opacity: 0.6; }
+    66% { clip-path: inset(70% 0 5% 0); transform: translate(-3px, 2px); opacity: 0.9; }
+    100% { clip-path: inset(10% 0 60% 0); transform: translate(3px, -1px); opacity: 0.7; }
+}
+
+@keyframes rageGlitchAfter {
+    0% { clip-path: inset(60% 0 10% 0); transform: translate(3px, 2px); opacity: 0.7; }
+    33% { clip-path: inset(10% 0 50% 0); transform: translate(-4px, -1px); opacity: 0.9; }
+    66% { clip-path: inset(30% 0 40% 0); transform: translate(2px, -2px); opacity: 0.6; }
+    100% { clip-path: inset(50% 0 20% 0); transform: translate(-2px, 1px); opacity: 0.8; }
+}
+
+/* Cycling destruction messages */
+.rage-messages {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--neon-orange);
+    text-shadow:
+        0 0 10px var(--neon-orange),
+        0 0 30px rgba(255, 106, 0, 0.5);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    animation: messageFlash 0.4s ease-in-out infinite alternate;
+}
+
+@keyframes messageFlash {
+    0% { opacity: 0.6; transform: scale(0.98); }
+    100% { opacity: 1; transform: scale(1.02); }
+}
+
+/* Respawn button */
+.respawn-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 18px 40px;
+    border: 2px solid var(--neon-green);
+    background: rgba(57, 255, 20, 0.08);
+    color: var(--neon-green);
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 0 20px rgba(57, 255, 20, 0.3),
+        0 0 60px rgba(57, 255, 20, 0.1);
+    animation: respawnPulse 1s ease-in-out infinite alternate, respawnAppear 0.5s ease-out forwards;
+    text-shadow: 0 0 10px var(--neon-green);
+    transition: all 0.2s;
+    margin-top: 10px;
+}
+
+.respawn-btn:active {
+    transform: scale(0.95);
+    background: rgba(57, 255, 20, 0.2);
+}
+
+@keyframes respawnPulse {
+    0% { box-shadow: 0 0 15px rgba(57, 255, 20, 0.2), 0 0 40px rgba(57, 255, 20, 0.05); }
+    100% { box-shadow: 0 0 30px rgba(57, 255, 20, 0.5), 0 0 80px rgba(57, 255, 20, 0.15); }
+}
+
+@keyframes respawnAppear {
+    0% { opacity: 0; transform: translateY(20px) scale(0.8); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.respawn-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 40%;
+    height: 200%;
+    background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.15), transparent);
+    transform: skewX(-20deg);
+    animation: btnShine 2s infinite;
+}
+
+/* Kill count badge */
+.kill-count {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 500;
+    font-family: var(--font-pixel);
+    font-size: 7px;
+    color: var(--neon-red);
+    text-shadow: 0 0 6px rgba(255, 23, 68, 0.5);
+    letter-spacing: 1px;
+    background: rgba(5, 5, 10, 0.8);
+    border: 1px solid rgba(255, 23, 68, 0.3);
+    padding: 6px 10px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.kill-count.visible {
+    opacity: 1;
+}
+
+/* HP bar fatal state */
+.hp-fill.fatal {
+    width: 0% !important;
+    background: #111 !important;
+    box-shadow: none !important;
+}
+
+.hp-bar.fatal-bar {
+    position: relative;
+}
+
+.hp-bar.fatal-bar::after {
+    content: 'FATAL';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    color: var(--neon-red);
+    text-shadow: 0 0 8px var(--neon-red);
+    letter-spacing: 3px;
+    animation: fatalBlink 0.5s steps(1) infinite;
+}
+
+@keyframes fatalBlink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0.3; }
+}

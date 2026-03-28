@@ -314,6 +314,30 @@
             transform: translateY(-2px);
         }
 
+        .hero-cta-secondary {
+            display: inline-block;
+            margin-top: 16px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: var(--magenta);
+            background: transparent;
+            border: 1px solid var(--magenta);
+            padding: 12px 32px;
+            cursor: pointer;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(255,0,170,0.15);
+        }
+        .hero-cta-secondary:hover {
+            background: var(--magenta);
+            color: #fff;
+            box-shadow: 0 0 30px rgba(255,0,170,0.4), 0 0 60px rgba(255,0,170,0.15);
+            transform: translateY(-2px);
+        }
+
         .hero-sub {
             margin-top: 20px;
             font-size: 13px;
@@ -637,35 +661,76 @@
             padding: 100px 0;
         }
 
-        .pricing-card {
-            max-width: 480px;
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            max-width: 820px;
             margin: 0 auto;
+            align-items: stretch;
+        }
+
+        .pricing-card {
             background: var(--bg-card);
-            border: 1px solid var(--cyan);
             padding: 0;
             text-align: center;
             position: relative;
-            box-shadow: 0 0 40px rgba(0,240,255,0.08);
+        }
+
+        .pricing-card--free {
+            border: 1px solid var(--cyan);
+            box-shadow: 0 0 30px rgba(0,240,255,0.06);
+        }
+
+        .pricing-card--pro {
+            border: 2px solid var(--magenta);
+            box-shadow: 0 0 40px rgba(255,0,170,0.1);
+            transform: scale(1.03);
         }
 
         .pricing-card-glow {
             position: absolute;
             inset: -1px;
-            border: 1px solid var(--cyan);
             opacity: 0;
-            animation: pricePulse 3s infinite;
             pointer-events: none;
         }
-        @keyframes pricePulse {
+        .pricing-card--free .pricing-card-glow {
+            border: 1px solid var(--cyan);
+            animation: pricePulseCyan 3s infinite;
+        }
+        .pricing-card--pro .pricing-card-glow {
+            border: 2px solid var(--magenta);
+            animation: pricePulseMagenta 3s infinite;
+        }
+        @keyframes pricePulseCyan {
             0%, 100% { opacity: 0; box-shadow: 0 0 0 0 rgba(0,240,255,0); }
             50% { opacity: 1; box-shadow: 0 0 20px rgba(0,240,255,0.15); }
         }
+        @keyframes pricePulseMagenta {
+            0%, 100% { opacity: 0; box-shadow: 0 0 0 0 rgba(255,0,170,0); }
+            50% { opacity: 1; box-shadow: 0 0 25px rgba(255,0,170,0.2); }
+        }
+
+        .pricing-pro-badge {
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #fff;
+            background: var(--magenta);
+            padding: 5px 18px;
+        }
 
         .pricing-header {
-            padding: 32px 40px 24px;
+            padding: 32px 32px 24px;
             border-bottom: 1px solid var(--border);
         }
-        .pricing-header .section-label { color: var(--cyan); margin-bottom: 16px; }
+        .pricing-card--free .pricing-header .section-label { color: var(--cyan); margin-bottom: 16px; }
+        .pricing-card--pro .pricing-header .section-label { color: var(--magenta); margin-bottom: 16px; }
 
         .pricing-amount {
             font-family: 'Orbitron', sans-serif;
@@ -687,47 +752,60 @@
         }
 
         .pricing-body {
-            padding: 32px 40px;
+            padding: 28px 32px;
         }
 
         .pricing-features {
             list-style: none;
-            margin-bottom: 32px;
+            margin-bottom: 28px;
             text-align: left;
         }
         .pricing-features li {
-            padding: 8px 0;
+            padding: 7px 0;
             font-size: 14px;
             color: var(--text);
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
-        .pricing-features li::before {
-            content: '>';
-            color: var(--cyan);
-            font-weight: bold;
+        .pricing-features li .check-icon {
+            flex-shrink: 0;
+            font-size: 14px;
         }
+        .pricing-card--free .pricing-features li .check-icon { color: var(--cyan); }
+        .pricing-card--pro .pricing-features li .check-icon { color: var(--magenta); }
 
         .pricing-cta {
             display: block;
             width: 100%;
             font-family: 'Orbitron', sans-serif;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             letter-spacing: 2px;
-            color: var(--bg);
-            background: var(--cyan);
             border: none;
-            padding: 18px;
+            padding: 16px;
             cursor: pointer;
             text-decoration: none;
             text-transform: uppercase;
             transition: all 0.3s;
-            box-shadow: 0 0 30px rgba(0,240,255,0.25);
         }
-        .pricing-cta:hover {
-            box-shadow: 0 0 50px rgba(0,240,255,0.45);
+
+        .pricing-card--free .pricing-cta {
+            color: var(--bg);
+            background: var(--cyan);
+            box-shadow: 0 0 25px rgba(0,240,255,0.2);
+        }
+        .pricing-card--free .pricing-cta:hover {
+            box-shadow: 0 0 45px rgba(0,240,255,0.4);
+        }
+
+        .pricing-card--pro .pricing-cta {
+            color: #fff;
+            background: var(--magenta);
+            box-shadow: 0 0 25px rgba(255,0,170,0.25);
+        }
+        .pricing-card--pro .pricing-cta:hover {
+            box-shadow: 0 0 45px rgba(255,0,170,0.5);
         }
 
         .pricing-nobs {
@@ -843,6 +921,8 @@
 
             .bracketed { padding: 24px; }
 
+            .pricing-grid { grid-template-columns: 1fr; }
+            .pricing-card--pro { transform: scale(1); }
             .pricing-card { margin: 0 12px; }
             .pricing-body, .pricing-header { padding-left: 24px; padding-right: 24px; }
 
@@ -853,6 +933,7 @@
 
         @media (max-width: 480px) {
             .hero-cta { padding: 16px 32px; font-size: 14px; }
+            .hero-cta-secondary { padding: 10px 24px; font-size: 11px; }
         }
 
         /* ============================================
@@ -1184,7 +1265,7 @@
                 <em>Because it should.</em>
             </p>
             <a href="https://github.com/Elirank1/ouchmac/releases/latest" class="hero-cta">&#x2B07;&#xFE0F; DOWNLOAD FREE</a>
-            <a href="#pricing" class="hero-cta-secondary">&#x1F513; UNLOCK ALL PACKS &mdash; $4.99</a>
+            <a href="https://kergames.lemonsqueezy.com/checkout/buy/454abe38-2627-4cf8-a94d-0584678ed2e2" class="hero-cta-secondary">&#x1F513; UNLOCK ALL PACKS &mdash; $4.99</a>
             <p class="hero-sub">Free download &middot; 2 sound packs included &middot; Unlock all 8 for $4.99</p>
         </div>
         <div class="scroll-indicator">&darr; SCROLL TO ENTER &darr;</div>
@@ -1374,24 +1455,47 @@
                     One Price. <span class="neon-text-orange">No Tricks.</span>
                 </h2>
             </div>
-            <div class="pricing-card fade-in" id="buy">
-                <div class="pricing-card-glow"></div>
-                <div class="pricing-header">
-                    <div class="section-label" style="color:var(--cyan)">FULL ACCESS &middot; FOREVER</div>
-                    <div class="pricing-amount"><span>$</span>4.99</div>
-                    <div class="pricing-note">One-time purchase. That's it. That's the whole deal.</div>
+            <div class="pricing-grid fade-in" id="buy">
+                <!-- FREE TIER -->
+                <div class="pricing-card pricing-card--free">
+                    <div class="pricing-card-glow"></div>
+                    <div class="pricing-header">
+                        <div class="section-label">FREE &middot; FOREVER</div>
+                        <div class="pricing-amount"><span>$</span>0</div>
+                        <div class="pricing-note">No credit card. No signup. Just download.</div>
+                    </div>
+                    <div class="pricing-body">
+                        <ul class="pricing-features">
+                            <li><span class="check-icon">&#x2713;</span> 2 sound packs (Berserker + Creature)</li>
+                            <li><span class="check-icon">&#x2713;</span> Damage log + HP tracking</li>
+                            <li><span class="check-icon">&#x2713;</span> Basic slap detection</li>
+                            <li><span class="check-icon">&#x2713;</span> Web PWA access</li>
+                        </ul>
+                        <a href="https://github.com/Elirank1/ouchmac/releases/latest" class="pricing-cta">&#x2B07;&#xFE0F; DOWNLOAD FREE</a>
+                    </div>
                 </div>
-                <div class="pricing-body">
-                    <ul class="pricing-features">
-                        <li>All sound modes (Berserker + Creature)</li>
-                        <li>Full damage log and HP tracking</li>
-                        <li>Adjustable pain threshold (Tank / Warrior / Mage)</li>
-                        <li>Web PWA access for phones + tablets</li>
-                        <li>Future sound packs included free</li>
-                        <li>Zero subscriptions, zero ads, zero data collection</li>
-                    </ul>
-                    <a href="#buy" class="pricing-cta">&#9889; BUY OUCHMAC &mdash; $4.99</a>
-                    <p class="pricing-nobs">No subscription. No BS. No microtransactions.<br>Just a Mac that screams.</p>
+
+                <!-- PRO TIER -->
+                <div class="pricing-card pricing-card--pro">
+                    <div class="pricing-card-glow"></div>
+                    <div class="pricing-pro-badge">BEST VALUE</div>
+                    <div class="pricing-header">
+                        <div class="section-label">FULL ACCESS &middot; FOREVER</div>
+                        <div class="pricing-amount"><span>$</span>4.99</div>
+                        <div class="pricing-note">One-time purchase. That's it.</div>
+                    </div>
+                    <div class="pricing-body">
+                        <ul class="pricing-features">
+                            <li><span class="check-icon">&#x2713;</span> All 8 sound packs</li>
+                            <li><span class="check-icon">&#x2713;</span> 5-algorithm ensemble detection</li>
+                            <li><span class="check-icon">&#x2713;</span> Force-reactive volume</li>
+                            <li><span class="check-icon">&#x2713;</span> Launch at login</li>
+                            <li><span class="check-icon">&#x2713;</span> Future packs included free</li>
+                            <li><span class="check-icon">&#x2713;</span> Zero subscriptions, zero ads</li>
+                        </ul>
+                        <a href="#pricing" class="pricing-cta">&#x1F513; UNLOCK ALL &mdash; $4.99</a>
+                        <p class="pricing-nobs">No subscription. No BS. No microtransactions.<br>Just a Mac that screams.</p>
+                    </div>
                 </div>
             </div>
         </div>

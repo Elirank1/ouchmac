@@ -11,6 +11,8 @@
         lastHitTime: 0,
         debounceMs: 1500,
         maxHP: 100,
+        dead: false,
+        killCount: parseInt(localStorage.getItem('ouch_kills') || '0', 10),
     };
 
     const thresholds = { low: 18, medium: 12, high: 7 };
@@ -386,6 +388,8 @@
 
     // ── Hit handling ───────────────────────────────────
     function triggerHit(intensity) {
+        if (state.dead) return;
+
         const now = Date.now();
         if (now - state.lastHitTime < state.debounceMs) return;
         state.lastHitTime = now;
@@ -398,6 +402,12 @@
         playSound(volume);
         updateHitDisplay();
         animateHit();
+
+        // Check if device is destroyed
+        const hp = Math.max(0, state.maxHP - state.hitCount * 5);
+        if (hp <= 0) {
+            rageQuit();
+        }
     }
 
     function animateHit() {
@@ -450,6 +460,97 @@
         // Quip
         const idx = Math.min(state.hitCount, quips.length - 1);
         els.hitQuip.textContent = quips[idx] || '';
+    }
+
+    // ── Rage Quit Mode ─────────────────────────────────
+    const rageMessages = ['RAGE QUIT!', 'TOTAL DESTRUCTION!', 'NO SURVIVORS!', 'OBLITERATED!', 'ANNIHILATED!', 'RIP IN PIECES!'];
+    let rageMessageInterval = null;
+    let rageTimeout = null;
+
+    function rageQuit() {
+        state.dead = true;
+
+        // Increment kill count
+        state.killCount++;
+        localStorage.setItem('ouch_kills', String(state.killCount));
+
+        // Update kill count display
+        const killCountEl = document.getElementById('kill-count');
+        const killCountNum = document.getElementById('kill-count-num');
+        killCountNum.textContent = state.killCount;
+        killCountEl.classList.add('visible');
+
+        // Replace hit counter with skull
+        els.hitCount.textContent = '💀';
+        els.hitCount.style.fontSize = '60px';
+
+        // HP bar goes fatal
+        els.hpFill.classList.add('fatal');
+        els.hpFill.parentElement.classList.add('fatal-bar');
+        els.hpText.textContent = 'DEAD';
+        els.hpText.style.color = 'var(--neon-red)';
+
+        // Add rage-quit class to body (triggers red flash + shake)
+        document.body.classList.add('rage-quit');
+
+        // Show overlay
+        const overlay = document.getElementById('rage-overlay');
+        overlay.style.display = 'flex';
+
+        // Cycle destruction messages
+        let msgIdx = 0;
+        const msgEl = document.getElementById('rage-messages');
+        rageMessageInterval = setInterval(() => {
+            msgIdx = (msgIdx + 1) % rageMessages.length;
+            msgEl.textContent = rageMessages[msgIdx];
+        }, 600);
+
+        // Show respawn button after 3 seconds
+        rageTimeout = setTimeout(() => {
+            document.getElementById('respawn-btn').style.display = 'flex';
+        }, 3000);
+
+        // Stop shaking body after 2 seconds
+        setTimeout(() => {
+            document.body.classList.remove('rage-quit');
+        }, 2000);
+
+        // Status text
+        showStatus('[ DEVICE DESTROYED ]', 'error');
+    }
+
+    function respawn() {
+        state.dead = false;
+
+        // Clear timers
+        if (rageMessageInterval) clearInterval(rageMessageInterval);
+        if (rageTimeout) clearTimeout(rageTimeout);
+        rageMessageInterval = null;
+        rageTimeout = null;
+
+        // Remove rage-quit class
+        document.body.classList.remove('rage-quit');
+
+        // Hide overlay and respawn button
+        document.getElementById('rage-overlay').style.display = 'none';
+        document.getElementById('respawn-btn').style.display = 'none';
+
+        // Reset HP
+        state.hitCount = 0;
+        localStorage.setItem('ouch_hits', '0');
+
+        // Restore hit counter style
+        els.hitCount.style.fontSize = '';
+
+        // Remove fatal state from HP bar
+        els.hpFill.classList.remove('fatal');
+        els.hpFill.parentElement.classList.remove('fatal-bar');
+        els.hpText.style.color = '';
+
+        // Update display
+        updateHitDisplay();
+
+        showStatus(state.listening ? '[ SENSORS ACTIVE — AWAITING IMPACT ]' : '[ SYSTEM IDLE ]', state.listening ? 'listening' : '');
     }
 
     // ── Accelerometer ──────────────────────────────────
@@ -517,6 +618,18 @@
         updateHitDisplay();
         setMode(state.mode);
         setSensitivity(state.sensitivity);
+
+        // Init kill count display
+        const killCountNum = document.getElementById('kill-count-num');
+        killCountNum.textContent = state.killCount;
+        if (state.killCount > 0) {
+            document.getElementById('kill-count').classList.add('visible');
+        }
+
+        // Respawn button
+        document.getElementById('respawn-btn').addEventListener('click', () => {
+            respawn();
+        });
 
         $$('.mode-btn').forEach((btn) => {
             btn.addEventListener('click', () => setMode(btn.dataset.mode));
