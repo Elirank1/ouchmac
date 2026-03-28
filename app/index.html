@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#05050a">
+    <title>OuchMac</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
+    <div id="hit-flash" class="hit-flash"></div>
+    <div id="crit-text" class="crit-text" aria-hidden="true">CRITICAL HIT!</div>
+
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="glitch-wrapper">
+                <h1 class="logo glitch" data-text="OUCH MAC">OUCH MAC</h1>
+            </div>
+            <p id="status-text" class="status-text">[ SYSTEM IDLE ]</p>
+            <div class="header-bar"></div>
+        </header>
+
+        <!-- Damage Counter -->
+        <section class="damage-section">
+            <div class="damage-frame">
+                <div class="frame-corner tl"></div>
+                <div class="frame-corner tr"></div>
+                <div class="frame-corner bl"></div>
+                <div class="frame-corner br"></div>
+
+                <div class="damage-label">DAMAGE LOG</div>
+                <div id="hit-ring" class="hit-ring">
+                    <span id="hit-count" class="hit-count">0</span>
+                </div>
+                <div class="hp-bar-container">
+                    <div class="hp-label">DEVICE HP</div>
+                    <div class="hp-bar">
+                        <div id="hp-fill" class="hp-fill" style="width: 100%"></div>
+                    </div>
+                    <span id="hp-text" class="hp-text">100 / 100</span>
+                </div>
+                <p id="hit-quip" class="hit-quip">&nbsp;</p>
+            </div>
+        </section>
+
+        <!-- Combat Style (Mode) -->
+        <section class="control-section">
+            <label class="section-label">/// COMBAT STYLE</label>
+            <div class="mode-toggle">
+                <button id="mode-adults" class="mode-btn active" data-mode="adults">
+                    <span class="mode-icon">💀</span>
+                    <span class="mode-name">BERSERKER</span>
+                    <span class="mode-sub">pain & suffering</span>
+                </button>
+                <button id="mode-kids" class="mode-btn" data-mode="kids">
+                    <span class="mode-icon">🐉</span>
+                    <span class="mode-name">CREATURE</span>
+                    <span class="mode-sub">dungeon pets</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Pain Threshold (Sensitivity) -->
+        <section class="control-section">
+            <label class="section-label">/// PAIN THRESHOLD</label>
+            <div class="sensitivity-row">
+                <button class="sens-btn" data-sens="low">
+                    <span class="sens-icon">🛡️</span>
+                    <span>TANK</span>
+                </button>
+                <button class="sens-btn active" data-sens="medium">
+                    <span class="sens-icon">⚔️</span>
+                    <span>WARRIOR</span>
+                </button>
+                <button class="sens-btn" data-sens="high">
+                    <span class="sens-icon">🧙</span>
+                    <span>MAGE</span>
+                </button>
+            </div>
+            <p id="threshold-label" class="threshold-label">[ DMG THRESHOLD: 1.2g ]</p>
+        </section>
+
+        <!-- Action Buttons -->
+        <section class="actions">
+            <button id="btn-start" class="btn-primary">
+                <span class="btn-icon">⚡</span>
+                <span>ACTIVATE SENSORS</span>
+            </button>
+            <button id="btn-simulate" class="btn-attack">
+                <span class="btn-icon">🗡️</span>
+                <span>SIMULATE ATTACK</span>
+            </button>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <button id="btn-reset" class="btn-reset">[ RESET LOG ]</button>
+            <span class="version">SYS v1.0.0</span>
+        </footer>
+    </div>
+
+    <script src="app.js?v=2"></script>
+</body>
+</html>
