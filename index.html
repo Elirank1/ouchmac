@@ -867,6 +867,294 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* ============================================
+           REEL PROMO SECTION
+           ============================================ */
+        .promo {
+            padding: 80px 0;
+            background: linear-gradient(180deg, rgba(255,0,170,0.06) 0%, var(--bg) 100%);
+            border-top: 1px solid rgba(255,0,170,0.15);
+            border-bottom: 1px solid rgba(255,0,170,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .promo::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--magenta), transparent);
+            animation: promoGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes promoGlow {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        .promo-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 0 24px;
+        }
+
+        .promo-badge {
+            display: inline-block;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: #fff;
+            background: var(--magenta);
+            padding: 6px 18px;
+            margin-bottom: 24px;
+            animation: promoPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes promoPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(255,0,170,0.3); }
+            50% { box-shadow: 0 0 30px rgba(255,0,170,0.6), 0 0 60px rgba(255,0,170,0.2); }
+        }
+
+        .promo-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(28px, 4vw, 44px);
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .promo-title span {
+            color: var(--magenta);
+            text-shadow: 0 0 15px rgba(255,0,170,0.5);
+        }
+
+        .promo-sub {
+            font-size: 18px;
+            color: var(--text);
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .promo-steps {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr auto 1fr;
+            gap: 0;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 600px) {
+            .promo-steps {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .promo-arrow { display: none; }
+        }
+
+        .promo-step {
+            text-align: center;
+            padding: 24px 16px;
+            border: 1px solid var(--border);
+            background: rgba(10,10,20,0.6);
+            position: relative;
+        }
+
+        .promo-step-num {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--magenta);
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .promo-step-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        .promo-step-text {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .promo-step-text strong {
+            color: #fff;
+        }
+
+        .promo-arrow {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            color: var(--magenta);
+            opacity: 0.5;
+        }
+
+        .promo-hashtag {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--magenta);
+            text-shadow: 0 0 10px rgba(255,0,170,0.4);
+            margin-bottom: 24px;
+            letter-spacing: 2px;
+        }
+
+        .promo-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 18px 40px;
+            background: transparent;
+            border: 2px solid var(--magenta);
+            color: var(--magenta);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .promo-cta:hover {
+            background: var(--magenta);
+            color: #fff;
+            box-shadow: 0 0 30px rgba(255,0,170,0.4);
+        }
+
+        .promo-note {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+
+        .promo-note a {
+            color: var(--magenta);
+            text-decoration: none;
+        }
+
+        /* Promo form overlay */
+        .promo-form-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(5,5,10,0.92);
+            backdrop-filter: blur(8px);
+            z-index: 5000;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .promo-form-overlay.active {
+            display: flex;
+        }
+
+        .promo-form {
+            background: var(--bg-card);
+            border: 1px solid var(--magenta);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+        }
+
+        .promo-form-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .promo-form h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--magenta);
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .promo-form label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            margin-top: 16px;
+        }
+
+        .promo-form input, .promo-form select {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .promo-form input:focus {
+            border-color: var(--magenta);
+        }
+
+        .promo-form-submit {
+            margin-top: 24px;
+            width: 100%;
+            padding: 14px;
+            background: var(--magenta);
+            border: none;
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .promo-form-submit:hover {
+            box-shadow: 0 0 20px rgba(255,0,170,0.5);
+        }
+
+        .promo-form-success {
+            display: none;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .promo-form-success .check {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .promo-form-success h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            color: var(--green);
+            margin-bottom: 8px;
+        }
+
+        .promo-form-success p {
+            color: var(--text-dim);
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -876,8 +1164,8 @@
         <div class="container">
             <a href="#" class="nav-logo">OUCH<span>MAC</span></a>
             <div class="nav-links">
+                <a href="#promo" style="color:var(--magenta);">FREE</a>
                 <a href="#features">ABILITIES</a>
-                <a href="#how">QUEST LOG</a>
                 <a href="#pricing">LOOT</a>
                 <a href="#buy" class="nav-cta">GET IT</a>
             </div>
@@ -900,6 +1188,85 @@
         </div>
         <div class="scroll-indicator">&darr; SCROLL TO ENTER &darr;</div>
     </section>
+
+    <!-- REEL PROMO -->
+    <section class="promo" id="promo">
+        <div class="promo-inner">
+            <div class="promo-badge">FREE ACCESS</div>
+            <h2 class="promo-title fade-in">Film a Reel.<br><span>Get OuchMac Free.</span></h2>
+            <p class="promo-sub fade-in">
+                Slap your device on camera. Post it. Tag us.<br>
+                We'll send you the full app for free. No catch.
+            </p>
+
+            <div class="promo-steps fade-in">
+                <div class="promo-step">
+                    <div class="promo-step-num">STEP 01</div>
+                    <div class="promo-step-icon">📱</div>
+                    <div class="promo-step-text">Open the <strong>free web demo</strong> on your phone or Mac</div>
+                </div>
+                <div class="promo-arrow">&rarr;</div>
+                <div class="promo-step">
+                    <div class="promo-step-num">STEP 02</div>
+                    <div class="promo-step-icon">🎬</div>
+                    <div class="promo-step-text">Film yourself <strong>slapping your device</strong> and post it as a Reel/TikTok</div>
+                </div>
+                <div class="promo-arrow">&rarr;</div>
+                <div class="promo-step">
+                    <div class="promo-step-num">STEP 03</div>
+                    <div class="promo-step-icon">🎁</div>
+                    <div class="promo-step-text">Submit the link below and get <strong>OuchMac for free</strong></div>
+                </div>
+            </div>
+
+            <div class="promo-hashtag fade-in">#OuchMac</div>
+
+            <button class="promo-cta fade-in" onclick="document.getElementById('promoOverlay').classList.add('active')">
+                🎬 SUBMIT YOUR REEL
+            </button>
+
+            <p class="promo-note fade-in">
+                Works with TikTok, Instagram Reels, YouTube Shorts, or X/Twitter.<br>
+                Public posts only. We'll verify and email your free code within 24h.
+            </p>
+        </div>
+    </section>
+
+    <!-- Promo Form Overlay -->
+    <div class="promo-form-overlay" id="promoOverlay">
+        <div class="promo-form">
+            <button class="promo-form-close" onclick="document.getElementById('promoOverlay').classList.remove('active')">&times;</button>
+
+            <div id="promoFormContent">
+                <h3>🎬 SUBMIT YOUR REEL</h3>
+                <label>YOUR EMAIL</label>
+                <input type="email" id="promoEmail" placeholder="warrior@example.com" required>
+
+                <label>REEL / TIKTOK / SHORT URL</label>
+                <input type="url" id="promoUrl" placeholder="https://instagram.com/reel/..." required>
+
+                <label>PLATFORM</label>
+                <select id="promoPlatform">
+                    <option value="instagram">Instagram Reels</option>
+                    <option value="tiktok">TikTok</option>
+                    <option value="youtube">YouTube Shorts</option>
+                    <option value="twitter">X / Twitter</option>
+                    <option value="other">Other</option>
+                </select>
+
+                <label>YOUR HANDLE (so we can shout you out)</label>
+                <input type="text" id="promoHandle" placeholder="@yourhandle">
+
+                <button class="promo-form-submit" onclick="submitPromo()">⚡ CLAIM FREE OUCHMAC</button>
+            </div>
+
+            <div class="promo-form-success" id="promoSuccess">
+                <div class="check">✅</div>
+                <h4>SUBMISSION RECEIVED</h4>
+                <p>We'll verify your reel and email your free code within 24 hours. Keep slapping.</p>
+            </div>
+        </div>
+    </div>
 
     <!-- DEMO -->
     <section class="demo" id="demo">
@@ -1141,6 +1508,44 @@
                 }
             });
         });
+        // ========================================
+        // Reel promo form submission
+        // ========================================
+        function submitPromo() {
+            const email = document.getElementById('promoEmail').value.trim();
+            const url = document.getElementById('promoUrl').value.trim();
+            const platform = document.getElementById('promoPlatform').value;
+            const handle = document.getElementById('promoHandle').value.trim();
+
+            if (!email || !url) {
+                alert('Please fill in your email and reel URL');
+                return;
+            }
+
+            // Store submission locally (replace with real backend later)
+            const submissions = JSON.parse(localStorage.getItem('ouch_promo_submissions') || '[]');
+            submissions.push({
+                email, url, platform, handle,
+                timestamp: new Date().toISOString()
+            });
+            localStorage.setItem('ouch_promo_submissions', JSON.stringify(submissions));
+
+            // Send via mailto as interim solution (replace with API)
+            const subject = encodeURIComponent('OuchMac Reel Submission - ' + handle);
+            const body = encodeURIComponent(
+                'Email: ' + email + '\n' +
+                'Reel URL: ' + url + '\n' +
+                'Platform: ' + platform + '\n' +
+                'Handle: ' + handle
+            );
+
+            // Try to open mailto (works on mobile/desktop)
+            window.open('mailto:ouchmac@deeplica.ai?subject=' + subject + '&body=' + body, '_blank');
+
+            // Show success
+            document.getElementById('promoFormContent').style.display = 'none';
+            document.getElementById('promoSuccess').style.display = 'block';
+        }
     </script>
 </body>
 </html>
